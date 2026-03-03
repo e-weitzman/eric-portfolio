@@ -9,7 +9,7 @@ function useAIChat() {
     setMessages(next);
     setLoading(true);
     try {
-      const res = await fetch("/api/chat", {
+      const res = await fetch("https://api.anthropic.com/v1/messages", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -182,12 +182,10 @@ export default function Portfolio() {
   const [page, setPage] = useState("home");
   const [chatOpen, setChatOpen] = useState(false);
   const [input, setInput] = useState("");
-  const [bootDone, setBootDone] = useState(false);
   const { messages, loading, send } = useAIChat();
   const endRef = useRef(null);
 
   useEffect(() => { endRef.current?.scrollIntoView({ behavior: "smooth" }); }, [messages, loading]);
-  useEffect(() => { const t = setTimeout(() => setBootDone(true), 2200); return () => clearTimeout(t); }, []);
 
   const submit = () => { if (!input.trim()) return; send(input.trim()); setInput(""); };
 
@@ -271,7 +269,7 @@ export default function Portfolio() {
                   </div>
 
                   <Prompt delay={800}>cat summary.txt</Prompt>
-                  <div style={{ marginBottom: "1.5rem", paddingLeft: "0.5rem", borderLeft: "2px solid rgba(0,255,65,0.2)", paddingLeft: "1rem", color: "#94a3b8", fontSize: "0.88rem", lineHeight: 1.8 }}>
+                  <div style={{ marginBottom: "1.5rem", borderLeft: "2px solid rgba(0,255,65,0.2)", paddingLeft: "1rem", color: "#94a3b8", fontSize: "0.88rem", lineHeight: 1.8 }}>
                     <TypeIn text="Dependable, detail-oriented cybersecurity professional committed to pursuing a career in information technology. Specialized in incident response, digital forensics, and SOC operations. Quick learner eager to serve the community with hands-on expertise." delay={1000} speed={18} />
                   </div>
 
@@ -303,7 +301,7 @@ export default function Portfolio() {
         {/* ABOUT */}
         {page === "about" && (
           <div className="page-in" style={{ maxWidth: "1000px", margin: "0 auto", padding: "6rem 2rem 3rem" }}>
-            <div style={{ fontSize: "0.72rem", color: "#1a5c27", letterSpacing: "2px", marginBottom: "0.5rem" }}>// ABOUT</div>
+            <div style={{ fontSize: "0.72rem", color: "#1a5c27", letterSpacing: "2px", marginBottom: "0.5rem" }}>{/* ABOUT */}</div>
             <h2 style={{ fontFamily: "'Orbitron', monospace", fontWeight: 900, fontSize: "2rem", color: "#00ff41", letterSpacing: "2px", marginBottom: "2.5rem" }}>SYSTEM_PROFILE</h2>
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.5rem" }}>
@@ -367,7 +365,7 @@ export default function Portfolio() {
         {/* EXPERIENCE */}
         {page === "experience" && (
           <div className="page-in" style={{ maxWidth: "900px", margin: "0 auto", padding: "6rem 2rem 3rem" }}>
-            <div style={{ fontSize: "0.72rem", color: "#1a5c27", letterSpacing: "2px", marginBottom: "0.5rem" }}>// WORK HISTORY</div>
+            <div style={{ fontSize: "0.72rem", color: "#1a5c27", letterSpacing: "2px", marginBottom: "0.5rem" }}>{/* WORK HISTORY */}</div>
             <h2 style={{ fontFamily: "'Orbitron', monospace", fontWeight: 900, fontSize: "2rem", color: "#00ff41", letterSpacing: "2px", marginBottom: "2.5rem" }}>MISSION_LOG</h2>
             <div style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
               {EXPERIENCE.map((e, i) => (
@@ -397,7 +395,7 @@ export default function Portfolio() {
         {/* CERTS */}
         {page === "certs" && (
           <div className="page-in" style={{ maxWidth: "900px", margin: "0 auto", padding: "6rem 2rem 3rem" }}>
-            <div style={{ fontSize: "0.72rem", color: "#1a5c27", letterSpacing: "2px", marginBottom: "0.5rem" }}>// CREDENTIALS</div>
+            <div style={{ fontSize: "0.72rem", color: "#1a5c27", letterSpacing: "2px", marginBottom: "0.5rem" }}>{/* CREDENTIALS */}</div>
             <h2 style={{ fontFamily: "'Orbitron', monospace", fontWeight: 900, fontSize: "2rem", color: "#00ff41", letterSpacing: "2px", marginBottom: "2.5rem" }}>CERTIFICATIONS</h2>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: "1rem" }}>
               {CERTS.map((c, i) => (
@@ -427,7 +425,7 @@ export default function Portfolio() {
         {/* CONTACT */}
         {page === "contact" && (
           <div className="page-in" style={{ maxWidth: "700px", margin: "0 auto", padding: "6rem 2rem 3rem" }}>
-            <div style={{ fontSize: "0.72rem", color: "#1a5c27", letterSpacing: "2px", marginBottom: "0.5rem" }}>// CONTACT</div>
+            <div style={{ fontSize: "0.72rem", color: "#1a5c27", letterSpacing: "2px", marginBottom: "0.5rem" }}>{/* CONTACT */}</div>
             <h2 style={{ fontFamily: "'Orbitron', monospace", fontWeight: 900, fontSize: "2rem", color: "#00ff41", letterSpacing: "2px", marginBottom: "2.5rem" }}>OPEN_CHANNEL</h2>
             <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
               {[
