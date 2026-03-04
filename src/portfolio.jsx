@@ -17,25 +17,6 @@ function useAIChat() {
           max_tokens: 1000,
           system: `You are an AI assistant on Eric Weitzman's cybersecurity portfolio website. Here is Eric's background:
 
-import { useState, useEffect, useRef } from "react";
-
-// ── AI Chat ──────────────────────────────────────────────────────────────────
-function useAIChat() {
-  const [messages, setMessages] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const send = async (userText) => {
-    const next = [...messages, { role: "user", content: userText }];
-    setMessages(next);
-    setLoading(true);
-    try {
-      const res = await fetch("https://api.anthropic.com/v1/messages", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          model: "claude-sonnet-4-20250514",
-          max_tokens: 1000,
-          system: `You are an AI assistant on Eric Weitzman's cybersecurity portfolio website. Here is Eric's background:
-
 IDENTITY: Eric Weitzman — Cybersecurity professional and CS/Cybersecurity student at Kean University (graduating May 2026). Based in New Jersey, United States.
 
 CERTIFICATIONS: CompTIA Security+, CompTIA Network+, CompTIA Linux+, CompTIA A+, Certified Ethical Hacker (CEH), CEH Practical, CC (Certified in Cybersecurity), Security Analyst Level 1 (SAL1) — TryHackMe.
