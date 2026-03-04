@@ -17,6 +17,25 @@ function useAIChat() {
           max_tokens: 1000,
           system: `You are an AI assistant on Eric Weitzman's cybersecurity portfolio website. Here is Eric's background:
 
+import { useState, useEffect, useRef } from "react";
+
+// ── AI Chat ──────────────────────────────────────────────────────────────────
+function useAIChat() {
+  const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const send = async (userText) => {
+    const next = [...messages, { role: "user", content: userText }];
+    setMessages(next);
+    setLoading(true);
+    try {
+      const res = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          model: "claude-sonnet-4-20250514",
+          max_tokens: 1000,
+          system: `You are an AI assistant on Eric Weitzman's cybersecurity portfolio website. Here is Eric's background:
+
 IDENTITY: Eric Weitzman — Cybersecurity professional and CS/Cybersecurity student at Kean University (graduating May 2026). Based in New Jersey, United States.
 
 CERTIFICATIONS: CompTIA Security+, CompTIA Network+, CompTIA Linux+, CompTIA A+, Certified Ethical Hacker (CEH), CEH Practical, CC (Certified in Cybersecurity), Security Analyst Level 1 (SAL1) — TryHackMe.
@@ -178,6 +197,77 @@ function Prompt({ children, delay = 0 }) {
   );
 }
 
+// ── Contact Page (email obfuscated, revealed on click) ───────────────────────
+function ContactPage({ setChatOpen }) {
+  const [emailRevealed, setEmailRevealed] = useState(false);
+  // Split so the address never appears as a plain string in source
+  const u = "weitzman430";
+  const d = "gmail.com";
+
+  const handleEmailClick = () => {
+    if (!emailRevealed) { setEmailRevealed(true); return; }
+    window.location.href = `mailto:${u}@${d}`;
+  };
+
+  return (
+    <div className="page-in" style={{ maxWidth: "700px", margin: "0 auto", padding: "6rem 2rem 3rem" }}>
+      <div style={{ fontSize: "0.72rem", color: "#1a5c27", letterSpacing: "2px", marginBottom: "0.5rem" }}>{/* CONTACT */}</div>
+      <h2 style={{ fontFamily: "'Orbitron', monospace", fontWeight: 900, fontSize: "2rem", color: "#00ff41", letterSpacing: "2px", marginBottom: "2.5rem" }}>OPEN_CHANNEL</h2>
+      <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
+
+        {/* Email row — obfuscated until clicked */}
+        <div
+          onClick={handleEmailClick}
+          style={{ background: "rgba(0,255,65,0.06)", border: "1px solid rgba(0,255,65,0.22)", padding: "1.25rem 1.5rem", display: "flex", alignItems: "center", gap: "1.25rem", cursor: "pointer", transition: "all 0.2s" }}
+          onMouseEnter={e => e.currentTarget.style.borderColor = "rgba(0,255,65,0.55)"}
+          onMouseLeave={e => e.currentTarget.style.borderColor = "rgba(0,255,65,0.22)"}
+        >
+          <div style={{ fontFamily: "'Orbitron', monospace", color: "#00ff41", fontSize: "0.7rem", letterSpacing: "2px", minWidth: "80px" }}>[EMAIL]</div>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.75rem", flex: 1 }}>
+            {emailRevealed ? (
+              <span style={{ color: "#00ff41", fontSize: "0.88rem", fontFamily: "'Share Tech Mono', monospace" }}>
+                {u}@{d}
+              </span>
+            ) : (
+              <span style={{ color: "#4a7a55", fontSize: "0.82rem", letterSpacing: "1px" }}>
+                ████████████@██████.███ — click to reveal
+              </span>
+            )}
+            {emailRevealed && (
+              <span style={{ color: "#1a5c27", fontSize: "0.72rem", letterSpacing: "1px" }}>
+                [click again to open mail client]
+              </span>
+            )}
+          </div>
+        </div>
+
+        {/* LinkedIn row */}
+        <a href="https://www.linkedin.com/in/weitzmaneric" target="_blank" rel="noreferrer" style={{ textDecoration: "none" }}>
+          <div style={{ background: "rgba(0,212,255,0.06)", border: "1px solid rgba(0,212,255,0.22)", padding: "1.25rem 1.5rem", display: "flex", alignItems: "center", gap: "1.25rem", cursor: "pointer", transition: "all 0.2s" }}
+            onMouseEnter={e => e.currentTarget.style.borderColor = "rgba(0,212,255,0.55)"}
+            onMouseLeave={e => e.currentTarget.style.borderColor = "rgba(0,212,255,0.22)"}>
+            <div style={{ fontFamily: "'Orbitron', monospace", color: "#00d4ff", fontSize: "0.7rem", letterSpacing: "2px", minWidth: "80px" }}>[LINKEDIN]</div>
+            <div style={{ color: "#94a3b8", fontSize: "0.88rem" }}>linkedin.com/in/weitzmaneric</div>
+          </div>
+        </a>
+      </div>
+
+      <div style={{ marginTop: "2rem", background: "rgba(0,255,65,0.03)", border: "1px solid rgba(0,255,65,0.15)", padding: "1.5rem" }}>
+        <div style={{ color: "#4a7a55", fontSize: "0.78rem", lineHeight: 1.8 }}>
+          <span style={{ color: "#00ff41" }}>STATUS:</span> Open to cybersecurity roles, internships, and collaborations.<br />
+          <span style={{ color: "#00ff41" }}>LOCATION:</span> New Jersey, United States<br />
+          <span style={{ color: "#00ff41" }}>AVAILABILITY:</span> Graduating May 2026 · Available immediately for opportunities
+        </div>
+      </div>
+      <div style={{ marginTop: "1.5rem" }}>
+        <button onClick={() => setChatOpen(true)} style={{ width: "100%", background: "transparent", border: "1px solid rgba(0,255,65,0.4)", color: "#00ff41", padding: "0.85rem", cursor: "pointer", fontSize: "0.82rem", fontFamily: "'Share Tech Mono', monospace", letterSpacing: "2px", textTransform: "uppercase", animation: "pulse 2s infinite" }}>
+          ▶ LAUNCH AI ASSISTANT
+        </button>
+      </div>
+    </div>
+  );
+}
+
 // ── Main ──────────────────────────────────────────────────────────────────────
 export default function Portfolio() {
   const [page, setPage] = useState("home");
@@ -287,11 +377,9 @@ export default function Portfolio() {
                     <button onClick={() => setPage("experience")} style={{ background: "transparent", border: "1px solid #00ff41", color: "#00ff41", padding: "0.65rem 1.5rem", cursor: "pointer", fontSize: "0.82rem", fontFamily: "'Share Tech Mono', monospace", letterSpacing: "2px", textTransform: "uppercase", animation: "pulse 2s infinite" }}>
                       ./view_experience
                     </button>
-                    <a href="mailto:weitzman430@gmail.com" style={{ textDecoration: "none" }}>
-                      <button style={{ background: "transparent", border: "1px solid rgba(0,212,255,0.5)", color: "#00d4ff", padding: "0.65rem 1.5rem", cursor: "pointer", fontSize: "0.82rem", fontFamily: "'Share Tech Mono', monospace", letterSpacing: "2px", textTransform: "uppercase" }}>
+                    <button onClick={() => setPage("contact")} style={{ background: "transparent", border: "1px solid rgba(0,212,255,0.5)", color: "#00d4ff", padding: "0.65rem 1.5rem", cursor: "pointer", fontSize: "0.82rem", fontFamily: "'Share Tech Mono', monospace", letterSpacing: "2px", textTransform: "uppercase" }}>
                         ./contact.sh
                       </button>
-                    </a>
                   </div>
                 </div>
               </div>
@@ -425,37 +513,7 @@ export default function Portfolio() {
 
         {/* CONTACT */}
         {page === "contact" && (
-          <div className="page-in" style={{ maxWidth: "700px", margin: "0 auto", padding: "6rem 2rem 3rem" }}>
-            <div style={{ fontSize: "0.72rem", color: "#1a5c27", letterSpacing: "2px", marginBottom: "0.5rem" }}>{/* CONTACT */}</div>
-            <h2 style={{ fontFamily: "'Orbitron', monospace", fontWeight: 900, fontSize: "2rem", color: "#00ff41", letterSpacing: "2px", marginBottom: "2.5rem" }}>OPEN_CHANNEL</h2>
-            <div style={{ display: "flex", flexDirection: "column", gap: "1rem" }}>
-              {[
-                { ic: "✉", label: "EMAIL", val: "weitzman430@gmail.com", href: "mailto:weitzman430@gmail.com", color: "#00ff41" },
-                { ic: "⬡", label: "LINKEDIN", val: "linkedin.com/in/weitzmaneric", href: "https://www.linkedin.com/in/weitzmaneric", color: "#00d4ff" },
-              ].map(c => (
-                <a key={c.label} href={c.href} target="_blank" rel="noreferrer" style={{ textDecoration: "none" }}>
-                  <div style={{ background: `${c.color}06`, border: `1px solid ${c.color}22`, padding: "1.25rem 1.5rem", display: "flex", alignItems: "center", gap: "1.25rem", cursor: "pointer", transition: "all 0.2s" }}
-                    onMouseEnter={e => e.currentTarget.style.borderColor = `${c.color}55`}
-                    onMouseLeave={e => e.currentTarget.style.borderColor = `${c.color}22`}>
-                    <div style={{ fontFamily: "'Orbitron', monospace", color: c.color, fontSize: "0.7rem", letterSpacing: "2px", minWidth: "80px" }}>[{c.label}]</div>
-                    <div style={{ color: "#94a3b8", fontSize: "0.88rem" }}>{c.val}</div>
-                  </div>
-                </a>
-              ))}
-            </div>
-            <div style={{ marginTop: "2rem", background: "rgba(0,255,65,0.03)", border: "1px solid rgba(0,255,65,0.15)", padding: "1.5rem" }}>
-              <div style={{ color: "#4a7a55", fontSize: "0.78rem", lineHeight: 1.8 }}>
-                <span style={{ color: "#00ff41" }}>STATUS:</span> Open to cybersecurity roles, internships, and collaborations.<br />
-                <span style={{ color: "#00ff41" }}>LOCATION:</span> New Jersey, United States<br />
-                <span style={{ color: "#00ff41" }}>AVAILABILITY:</span> Graduating May 2026 · Available immediately for opportunities
-              </div>
-            </div>
-            <div style={{ marginTop: "1.5rem" }}>
-              <button onClick={() => setChatOpen(true)} style={{ width: "100%", background: "transparent", border: "1px solid rgba(0,255,65,0.4)", color: "#00ff41", padding: "0.85rem", cursor: "pointer", fontSize: "0.82rem", fontFamily: "'Share Tech Mono', monospace", letterSpacing: "2px", textTransform: "uppercase", animation: "pulse 2s infinite" }}>
-                ▶ LAUNCH AI ASSISTANT
-              </button>
-            </div>
-          </div>
+          <ContactPage setChatOpen={setChatOpen} />
         )}
 
         {/* AI FAB */}
