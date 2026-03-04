@@ -30,7 +30,7 @@ EDUCATION: Kean University B.S. Computer Science - Cybersecurity (2024–2026); 
 
 TOP SKILLS: SOC 1, Digital Forensics, Cyber Threat Hunting, Splunk, CrowdStrike, incident response.
 
-EMAIL: weitzmae@kean.edu
+EMAIL: weitzman430@gmail.com
 LINKEDIN: linkedin.com/in/weitzmaneric
 
 Answer questions about Eric warmly, professionally, and concisely (2-4 sentences). Speak as though you know him well. If asked technical cybersecurity questions, answer from Eric's perspective and expertise level.`,
@@ -262,6 +262,9 @@ export default function Portfolio() {
   const submit = () => { if (!input.trim()) return; send(input.trim()); setInput(""); };
 
   const nav = ["home", "about", "experience", "certs", "contact"];
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const navIcons = { home: "⌂", about: "▤", experience: "◈", certs: "✦", contact: "✉" };
 
   return (
     <>
@@ -271,6 +274,7 @@ export default function Portfolio() {
         body { background: #000; font-family: 'Share Tech Mono', monospace; }
         @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
         @keyframes fadeIn { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes slideDown { from{opacity:0;transform:translateY(-8px)} to{opacity:1;transform:translateY(0)} }
         @keyframes glitch {
           0%,100%{text-shadow:2px 0 #ff0055,-2px 0 #00ffcc}
           25%{text-shadow:-2px 0 #ff0055,2px 0 #00ffcc}
@@ -284,31 +288,93 @@ export default function Portfolio() {
         .cert-card:hover { background: rgba(0,255,65,0.06) !important; border-color: rgba(0,255,65,0.4) !important; transform: translateX(4px); transition: all 0.2s; }
         .exp-card:hover { border-left-width: 4px !important; background: rgba(0,255,65,0.03) !important; transition: all 0.2s; }
         .nav-btn:hover { color: #00ff41 !important; border-color: rgba(0,255,65,0.4) !important; }
+        .mobile-nav-item:hover { background: rgba(0,255,65,0.08) !important; color: #00ff41 !important; }
         ::-webkit-scrollbar { width: 4px; }
         ::-webkit-scrollbar-track { background: #000; }
         ::-webkit-scrollbar-thumb { background: #00ff41; }
         input::placeholder { color: #1a5c27; }
         input:focus { border-color: #00ff41 !important; box-shadow: 0 0 8px rgba(0,255,65,.3); }
+        @media (max-width: 600px) {
+          .desktop-nav { display: none !important; }
+          .hamburger { display: flex !important; }
+          .online-badge { display: none !important; }
+        }
+        @media (min-width: 601px) {
+          .hamburger { display: none !important; }
+          .mobile-menu { display: none !important; }
+        }
       `}</style>
       <Scanlines />
 
       <div style={{ background: "#000", color: "#e0e0e0", minHeight: "100vh", fontFamily: "'Share Tech Mono', monospace", position: "relative" }}>
 
         {/* NAV */}
-        <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, background: "rgba(0,0,0,0.95)", borderBottom: "1px solid rgba(0,255,65,0.2)", padding: "0.75rem 2rem", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <div style={{ fontFamily: "'Orbitron', monospace", fontWeight: 900, fontSize: "1rem", color: "#00ff41", letterSpacing: "3px" }}>
-            EW<span style={{ color: "#00d4ff" }}>_SEC</span>
-          </div>
-          <div style={{ display: "flex", gap: "0.25rem" }}>
-            {nav.map(n => (
-              <button key={n} className="nav-btn" onClick={() => setPage(n)} style={{ background: "transparent", border: `1px solid ${page === n ? "rgba(0,255,65,0.5)" : "transparent"}`, color: page === n ? "#00ff41" : "#4a7a55", padding: "0.4rem 0.9rem", cursor: "pointer", fontSize: "0.78rem", fontFamily: "'Share Tech Mono', monospace", letterSpacing: "1px", textTransform: "uppercase", transition: "all 0.2s" }}>
-                {n}
+        <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 100, background: "rgba(0,0,0,0.97)", borderBottom: "1px solid rgba(0,255,65,0.2)", backdropFilter: "blur(12px)" }}>
+          {/* Main bar */}
+          <div style={{ padding: "0.75rem 1.5rem", display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+            <div style={{ fontFamily: "'Orbitron', monospace", fontWeight: 900, fontSize: "1rem", color: "#00ff41", letterSpacing: "3px" }}>
+              EW<span style={{ color: "#00d4ff" }}>_SEC</span>
+            </div>
+
+            {/* Desktop links */}
+            <div className="desktop-nav" style={{ display: "flex", gap: "0.25rem" }}>
+              {nav.map(n => (
+                <button key={n} className="nav-btn" onClick={() => setPage(n)} style={{ background: "transparent", border: `1px solid ${page === n ? "rgba(0,255,65,0.5)" : "transparent"}`, color: page === n ? "#00ff41" : "#4a7a55", padding: "0.4rem 0.9rem", cursor: "pointer", fontSize: "0.78rem", fontFamily: "'Share Tech Mono', monospace", letterSpacing: "1px", textTransform: "uppercase", transition: "all 0.2s" }}>
+                  {n}
+                </button>
+              ))}
+            </div>
+
+            <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
+              {/* Online badge — hidden on mobile via CSS */}
+              <div className="online-badge" style={{ fontSize: "0.72rem", color: "#1a5c27" }}>
+                <span style={{ color: "#00ff41" }}>●</span> ONLINE
+              </div>
+
+              {/* Hamburger — shown on mobile via CSS */}
+              <button
+                className="hamburger"
+                onClick={() => setMenuOpen(v => !v)}
+                style={{ background: "transparent", border: "1px solid rgba(0,255,65,0.3)", color: "#00ff41", width: "38px", height: "38px", cursor: "pointer", fontSize: "1rem", fontFamily: "'Share Tech Mono', monospace", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: "5px", padding: "6px" }}
+                aria-label="Toggle menu"
+              >
+                <div style={{ width: "18px", height: "2px", background: menuOpen ? "#00d4ff" : "#00ff41", transition: "all 0.2s", transform: menuOpen ? "rotate(45deg) translate(5px,5px)" : "none" }} />
+                <div style={{ width: "18px", height: "2px", background: "#00ff41", transition: "all 0.2s", opacity: menuOpen ? 0 : 1 }} />
+                <div style={{ width: "18px", height: "2px", background: menuOpen ? "#00d4ff" : "#00ff41", transition: "all 0.2s", transform: menuOpen ? "rotate(-45deg) translate(5px,-5px)" : "none" }} />
               </button>
-            ))}
+            </div>
           </div>
-          <div style={{ fontSize: "0.72rem", color: "#1a5c27" }}>
-            <span style={{ color: "#00ff41" }}>●</span> ONLINE
-          </div>
+
+          {/* Mobile dropdown */}
+          {menuOpen && (
+            <div className="mobile-menu" style={{ borderTop: "1px solid rgba(0,255,65,0.15)", animation: "slideDown 0.2s ease forwards" }}>
+              {nav.map((n, i) => (
+                <button
+                  key={n}
+                  className="mobile-nav-item"
+                  onClick={() => { setPage(n); setMenuOpen(false); }}
+                  style={{
+                    display: "flex", alignItems: "center", gap: "1rem",
+                    width: "100%", background: page === n ? "rgba(0,255,65,0.06)" : "transparent",
+                    border: "none", borderBottom: "1px solid rgba(0,255,65,0.07)",
+                    color: page === n ? "#00ff41" : "#4a7a55",
+                    padding: "1rem 1.5rem", cursor: "pointer",
+                    fontSize: "0.85rem", fontFamily: "'Share Tech Mono', monospace",
+                    letterSpacing: "2px", textTransform: "uppercase",
+                    textAlign: "left", transition: "all 0.15s",
+                    animation: `fadeIn 0.2s ease ${i * 50}ms both`,
+                  }}
+                >
+                  <span style={{ color: page === n ? "#00ff41" : "#2a5c3a", fontSize: "0.9rem", minWidth: "20px" }}>{navIcons[n]}</span>
+                  <span>{n}</span>
+                  {page === n && <span style={{ marginLeft: "auto", fontSize: "0.65rem", color: "#00ff41", letterSpacing: "1px" }}>■ ACTIVE</span>}
+                </button>
+              ))}
+              <div style={{ padding: "0.6rem 1.5rem", fontSize: "0.65rem", color: "#1a5c27", letterSpacing: "2px" }}>
+                <span style={{ color: "#00ff41" }}>●</span> ONLINE · weitzmaneric
+              </div>
+            </div>
+          )}
         </nav>
 
         {/* HOME */}
