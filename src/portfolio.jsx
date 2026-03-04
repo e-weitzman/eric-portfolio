@@ -182,8 +182,8 @@ function Prompt({ children, delay = 0 }) {
 function ContactPage({ setChatOpen }) {
   const [emailRevealed, setEmailRevealed] = useState(false);
   // Split so the address never appears as a plain string in source
-  const u = "weitzman430";
-  const d = "gmail.com";
+  const u = "weitzmae";
+  const d = "kean.edu";
 
   const handleEmailClick = () => {
     if (!emailRevealed) { setEmailRevealed(true); return; }
