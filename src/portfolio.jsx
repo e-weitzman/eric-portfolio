@@ -19,7 +19,7 @@ function useAIChat() {
 
 IDENTITY: Eric Weitzman — Cybersecurity professional and CS/Cybersecurity student at Kean University (graduating May 2026). Based in New Jersey, United States.
 
-CERTIFICATIONS: CompTIA Security+, CompTIA Network+, CompTIA Linux+, CompTIA A+, Certified Ethical Hacker (CEH), CEH Practical, CC (Certified in Cybersecurity).
+CERTIFICATIONS: CompTIA Security+, CompTIA Network+, CompTIA Linux+, CompTIA A+, Certified Ethical Hacker (CEH), CEH Practical, CC (Certified in Cybersecurity), Security Analyst Level 1 (SAL1) — TryHackMe.
 
 EXPERIENCE:
 - Media Analyst at Allied Universal (Aug 2025–Jan 2026): Contractor with Citizens Financial Group's Physical Security Investigation team.
@@ -119,6 +119,7 @@ const CERTS = [
   { id: "CEH",  name: "Certified Ethical Hacker", color: "#ff3355" },
   { id: "CEH-P",name: "CEH Practical", color: "#cc00ff" },
   { id: "CC",   name: "CC (Certified in Cybersecurity)", color: "#00ffcc" },
+  { id: "SAL1", name: "Security Analyst Level 1 — TryHackMe", color: "#ff0055" },
 ];
 
 const SKILLS = [
